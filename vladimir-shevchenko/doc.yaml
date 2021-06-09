@@ -12,46 +12,48 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 paths:
-  /raitings:
+  /ratings:
     post:
       summary: Post
-      operationId: post_raiting
+      operationId: post_rating
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostInputRaiting'
+              $ref: '#/components/schemas/PostInputRating'
         required: true
       responses:
         '201':
           description: Successful Response
         '400':
           description: invalid request
-    get:
-      summary: Get
-      operationId: get_user_raiting
-      parameters:
-        - required: true
-          schema:
-            title: User Id
-            type: integer
-            format: int64
-          name: user_id
-          in: path
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetUserRaiting'
-        '404':
-          description: Not found
+    
+  /ratings/{user_id}:
+      get:
+        summary: Get
+        operationId: get_user_rating
+        parameters:
+          - required: true
+            schema:
+              title: User Id
+              type: integer
+              format: int64
+            name: user_id
+            in: path
+        responses:
+          '200':
+            description: Successful Response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GetUserRating'
+          '404':
+            description: Not found
 
 components:
   schemas:
-    PostInputRaiting:
-      title: PostInputRaiting
+    PostInputRating:
+      title: PostInputRating
       required:
         - user_id
         - score
@@ -71,14 +73,14 @@ components:
           type: integer
           format: int64
 
-    GetUserRaiting:
-      title: GetUserRaiting
+    GetUserRating:
+      title: GetUserRating
       required:
         - score
       type: object
       properties:
         score:
-          title: raiting user
+          title: rating user
           type: number
           format: float
         last_update:
