@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: API для микросервиса "Мои адреса"
+  description: Клиент может добавлять "свои" адреса, например адрес дома, работы и другие.
+  version: 0.0.1
+
+paths:
+    /addresses/{address_id}:
+        parameters:
+          - in: path
+            name: address_id
+            required: true
+            schema:
+                type: integer
+        get:
+            description: 'Получение информации о конкретном адресе'
+            responses:
+                '200':
+                    description: 'OK'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Address'
+                '403':
+                    description: 'Forbidden'
+                '404':
+                    description: 'Not found'
+        patch:
+            description: 'Изменение информации о конкретном адресе'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Address'
+            responses:
+                '200':
+                    description: 'OK'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Address'
+                '403':
+                    description: 'Forbidden'
+                '404':
+                    description: 'Not found'
+        delete:
+            description: 'Удаление сохраненного адреса'
+            responses:
+                '200':
+                    description: 'OK'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AddressResponse'
+                '403':
+                    description: 'Forbidden'
+                '404':
+                    description: 'Not found'
+
+    /addresses/:
+        post:
+            description: 'Добавление нового адреса'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Address'
+            responses:
+                '201':
+                    description: 'Created'
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/AddressResponse'
+
+                '400':
+                    description: 'Bad request'
+                '403':
+                    description: 'Forbidden'
+                '404':
+                    description: 'Not found'
+        get:
+            description: 'Получение списка всех добавленных адресов'
+            responses:
+                '200':
+                    description: 'OK'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetAddressesResponse'
+                '403':
+                    description: 'Forbidden'
+
+components:
+    schemas:
+        Address:
+            type: object
+            additionalProperties: false
+            properties:
+                address_id:
+                    type: integer
+                name:
+                    type: string
+                address:
+                    type: string
+                entrance:
+                    type: string
+                comment:
+                    type: string
+            required:
+              - name
+              - address
+              - entrance
+              - comment
+
+            
+        GetAddressesResponse:
+            type: object
+            additionalProperties: false
+            properties:
+                addresses:
+                    type: array
+                    items:
+                       $ref: '#/components/schemas/Address'
+            required:
+              - addresses
+      
+        AddressResponse:
+            type: object
+            additionalProperties: false
+            properties:
+              success:
+                type: boolean
+              address_id:
+                type: integer
+            required:
+               - success
