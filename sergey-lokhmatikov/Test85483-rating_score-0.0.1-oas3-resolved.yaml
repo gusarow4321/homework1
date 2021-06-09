@@ -1,0 +1,68 @@
+---
+openapi: 3.0.0
+info:
+  title: rating_service
+  description: Simple service for passendgers rating
+  version: 0.0.1-oas3
+servers:
+- url: /
+paths:
+  /get_rating{passenger_id}:
+    get:
+      description: Получение рейтинга пассажира
+      parameters:
+      - name: passenger_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRating'
+        "404":
+          description: Passenger_id not found
+  /add_rating:
+    post:
+      description: Добавление рейтинга
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddRating'
+      responses:
+        "201":
+          description: Added
+        "400":
+          description: Bad request passenger_id is not valid
+        "404":
+          description: Not Found
+components:
+  schemas:
+    GetRating:
+      required:
+      - passenger_id
+      type: object
+      properties:
+        passenger_id:
+          type: integer
+      additionalProperties: false
+    AddRating:
+      required:
+      - driver_score
+      - passenger_id
+      - score
+      type: object
+      properties:
+        passenger_id:
+          type: integer
+        score:
+          type: integer
+        driver_score:
+          type: integer
+      additionalProperties: false
