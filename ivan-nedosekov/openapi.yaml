@@ -1,0 +1,362 @@
+---
+openapi: 3.0.3
+info:
+  title: Family account
+  description: Объединение людей в группы для оплаты
+  version: 1.0.0
+paths:
+  /family:
+    summary: создание/удаление/обновление семьи
+    get:
+      operationId: GetFamilyInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "403":
+          description: ForbiddenActions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "404":
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+    post:
+      operationId: CreateFamily
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "403":
+          description: ForbiddenActions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+    patch:
+      operationId: UpdateFamilyInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body_1'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "403":
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+  /add_invited:
+    patch:
+      operationId: AddUserToFamily
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body_2'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "404":
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+  /payment_info:
+    get:
+      operationId: GetPaymentInfo
+      parameters:
+      - name: user_id
+        in: query
+        description: Идентификатор пользователя.
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/userId'
+      - name: group_id
+        in: query
+        description: Идентификатор группы.
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/groupId'
+      responses:
+        "200":
+          description: EncreptedPaymentInfo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "404":
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "403":
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+    post:
+      operationId: CreatePayment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body_3'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "403":
+          description: ForbiddenActions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+    patch:
+      operationId: UpdatePayment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/body_4'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+        "403":
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_403'
+components:
+  schemas:
+    userId:
+      minimum: 1
+      type: number
+      format: int64
+      default: 42
+    listUserId:
+      type: array
+      items:
+        $ref: '#/components/schemas/userId'
+    groupId:
+      minimum: 1
+      type: number
+      format: int64
+      default: 42
+    email:
+      type: string
+      default: someone@example.com
+    listEmails:
+      type: array
+      items:
+        $ref: '#/components/schemas/email'
+    paymentInfo:
+      type: string
+      default: SomePaymentDigits
+    actionCode:
+      minimum: 1
+      type: number
+      format: int64
+      default: 42
+    Action:
+      required:
+      - action
+      - user
+      type: object
+      properties:
+        user:
+          type: string
+          description: May be email may be userId.
+        action:
+          $ref: '#/components/schemas/actionCode'
+    inline_response_200:
+      required:
+      - IdMaster
+      - IdSlaves
+      - InvitedSlaves
+      - PaymentInfo
+      type: object
+      properties:
+        IdMaster:
+          $ref: '#/components/schemas/userId'
+        IdSlaves:
+          $ref: '#/components/schemas/listUserId'
+        InvitedSlaves:
+          $ref: '#/components/schemas/listEmails'
+        PaymentInfo:
+          $ref: '#/components/schemas/paymentInfo'
+    inline_response_403:
+      type: object
+      properties:
+        msg:
+          type: string
+          default: Useful message
+    body:
+      required:
+      - userId
+      type: object
+      properties:
+        userId:
+          $ref: '#/components/schemas/userId'
+    body_1:
+      required:
+      - Action
+      type: object
+      properties:
+        Action:
+          $ref: '#/components/schemas/Action'
+    body_2:
+      required:
+      - groupId
+      - userId
+      type: object
+      properties:
+        groupId:
+          $ref: '#/components/schemas/groupId'
+        userId:
+          $ref: '#/components/schemas/userId'
+    inline_response_200_1:
+      type: object
+      properties:
+        info:
+          type: string
+          default: info
+    body_3:
+      required:
+      - groupId
+      - paymentInfo
+      type: object
+      properties:
+        groupId:
+          $ref: '#/components/schemas/userId'
+        paymentInfo:
+          $ref: '#/components/schemas/paymentInfo'
+    body_4:
+      required:
+      - groupId
+      - paymentInfo
+      type: object
+      properties:
+        groupId:
+          $ref: '#/components/schemas/userId'
+        paymentInfo:
+          $ref: '#/components/schemas/paymentInfo'
+  responses:
+    OKResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_403'
+    BadRequestResponse:
+      description: BadRequest
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_403'
+    NotFoundResponse:
+      description: NotFound
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_403'
+    Forbidden:
+      description: ForbiddenActions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_403'
+    PaymentInfo:
+      description: EncryptedPaymentInfo
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_200_1'
