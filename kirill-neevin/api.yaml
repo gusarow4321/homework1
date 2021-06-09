@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+    title: 'Client rating'
+    version: '1.0'
+
+paths:
+    /ride_elevation/{ride_id}:
+        parameters:
+          - in: path
+            name: ride_id
+            required: true
+            schema:
+                type: integer
+        post:
+            description: 'Добавить оценку клиента для поездки'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/RideElevationPostRequest'
+            responses:
+                '200':
+                    description: 'OK'
+                '400':
+                    description: 'Bad request'
+                    
+        get:
+            description: 'Посмотреть оценку клиента за поездку'
+            responses:
+                '200':
+                    description: 'OK'
+                    content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/RideElevationGetRequest'
+                '400':
+                    description: 'Bad request'
+                    
+ 
+    /user/rating/{user_id}:
+        parameters:
+          - in: path
+            name: user_id
+            required: true
+            schema:
+                type: integer
+        get:
+            description: 'Получить рейтинг пользователя'
+            responses:
+                '200':
+                    description: 'OK'
+                    content:
+                      application/json:
+                          schema:
+                              $ref: '#/components/schemas/UserRatingGetRequest'
+                '400':
+                    description: 'Bad request'
+                    
+
+
+components:
+    schemas:
+        RideElevationPostRequest:
+            type: object
+            additionalProperties: false
+            properties:
+                elevation:
+                    type: integer
+
+
+        RideElevationGetRequest:
+            type: object
+            additionalProperties: false
+            properties:
+                elevation:
+                    type: integer
+
+
+        UserRatingGetRequest:
+            type: object
+            additionalProperties: false
+            properties:
+                rating:
+                    type: integer
+
+        
