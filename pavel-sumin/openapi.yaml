@@ -24,13 +24,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CreateFamilyResponse'
+                                $ref: '#/components/schemas/CreateFamilyErrorResponse'
                 '400':
                     description: 'Bad request'
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/CreateFamilyResponse'
+                                $ref: '#/components/schemas/CreateFamilyErrorResponse'
         get:
             description:  'Get current family info'
             requestBody:
