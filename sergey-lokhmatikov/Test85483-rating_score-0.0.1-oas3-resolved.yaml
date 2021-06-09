@@ -3,8 +3,11 @@ openapi: 3.0.0
 info:
   title: rating_service
   description: Simple service for passendgers rating
-  version: 0.0.1-oas3
+  version: 1.0.0
 servers:
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/Test85483/rating_service/1.0.0
 - url: /
 paths:
   /get_rating{passenger_id}:
@@ -54,11 +57,14 @@ components:
       additionalProperties: false
     AddRating:
       required:
+      - order_id
       - driver_score
       - passenger_id
       - score
       type: object
       properties:
+        order_id:
+          type: integer
         passenger_id:
           type: integer
         score:
