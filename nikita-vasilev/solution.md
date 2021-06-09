@@ -37,7 +37,7 @@ todo: sequence diagram
 - добавление рейтинга водителем
 - получение рейтинга пассажира  
 
-todo: openapi
+[openapi](assets/openapi.yaml)
   
 Схема базы:  
 ![DB Schema](assets/mvp_dp_schema.jpg)

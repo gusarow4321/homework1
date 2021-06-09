@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  title: 'Rates'
+  version: '1.0.0'
+
+paths:
+  /rates:
+    post:
+      description: 'Create new rate'
+      parameters:
+      - name: "idempotency_key"
+        in: "header"
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatesPostRequest'
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - status
+        '400':
+          description: 'Bad request'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - status
+
+  /rates/{passenger_id}:
+    parameters:
+      - in: path
+        name: passenger_id
+        required: true
+        schema:
+          type: integer
+    get:
+      description: 'Get passenger rate'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateGetResponse'
+        '404':
+          description: 'Not found'
+
+components:
+  schemas:
+    RateGetResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        passenger_id:
+          type: integer
+        driver_id:
+          type: integer
+        drive_id:
+          type: integer
+        rate:
+          type: number
+        completed_at:
+          type: string
+        created_at:
+          type: string
+
+    RatesPostRequest:
+      type: object
+      additionalProperties: true
+      properties:
+        passenger_id:
+          type: integer
+        driver_id:
+          type: integer
+        drive_id:
+          type: integer
+        rate:
+          type: number
+        completed_at:
+          type: string
+        created_at:
+          type: string
+        idempotent_key:
+          type: string
+      required:
+        - passenger_id
+        - driver_id
+        - drive_id
+        - rate
+        - completed_at
+        - created_at
+        - idempotency_key
