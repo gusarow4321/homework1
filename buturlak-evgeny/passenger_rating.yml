@@ -10,7 +10,8 @@ paths:
             name: user_id
             required: true
             schema:
-                type: integer
+                type: number
+                format: float
         get:
             description: 'Get rating'
             responses:
@@ -60,7 +61,8 @@ components:
             additionalProperties: false
             properties:
                 overall_rating:
-                    type: integer
+                    type: number
+                    format: float
                 politenss_rating:
                     type: integer
                 accuracy_rating:
