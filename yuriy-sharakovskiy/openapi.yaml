@@ -22,7 +22,6 @@ paths:
           $ref: "#/components/schemas/userId"
     get:
       operationId: GetAccountMail
-      summary: Read эл.почту клиента
       responses:
         200:
           description: OK
@@ -37,8 +36,7 @@ paths:
                   userid:
                     $ref: "#/components/schemas/userId"
                   email:
-                    type: string
-                    default: someone@example.com
+                    $ref: "#/components/schemas/email"
         400:
           $ref: "#/components/responses/BadRequestResponse"
         404:
@@ -47,7 +45,17 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
     post:
       operationId: PostAccountMail
-      summary: Create эл.почту клиента
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  $ref: "#/components/schemas/email"
       responses:
         200:
           $ref: "#/components/responses/OKResponse"
@@ -59,7 +67,17 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
     patch:
       operationId: PatchAccountMail
-      summary: Update эл.почту клиента
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  $ref: "#/components/schemas/email"
       responses:
         200:
           $ref: "#/components/responses/OKResponse"
@@ -71,7 +89,6 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
     delete:
       operationId: DeleteAccountMail
-      summary: Delete эл.почту клиента
       responses:
         200:
           $ref: "#/components/responses/OKResponse"
@@ -154,6 +171,9 @@ components:
       format: int64
       minimum: 1
       default: 123
+    email:
+      type: string
+      default: someone@example.com
     timePoint:
       type: string
       format: date-time
