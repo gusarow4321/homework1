@@ -45,37 +45,10 @@ paths:
         404:
           description: 'Пассажир не найден'
 
-  '/passenger-rating/calculate':
-    put:
-      summary: 'Запускает процесс пересчета рейтинга пассажира'
-      operationId: refreshRating
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PassengerRatingCalculation'
-      responses:
-        200:
-          description: 'Рейтинг успешно пересчитан'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PassengerRatingResponse'
-        400:
-          description: 'Некорректный запрос'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
 components:
   schemas:
     PassengerRating:
-      required:
-        - driver_id
-        - passenger_id
-        - trip_id
-        - score
+      required: [driver_id, passenger_id, trip_id, score]
       type:
         object
       properties:
@@ -104,8 +77,7 @@ components:
           example: "cool"
 
     PassengerRatingResponse:
-      required:
-        -score
+      required: [score]
       type:
         object
       properties:
@@ -114,28 +86,12 @@ components:
           format: double
           example: 4.89
 
-    PassengerRatingCalculation:
-      required:
-        -passenger_id
-        -calculated_at
-      type:
-        object
-      properties:
-        passenger_id:
-          type: integer
-          format: int64
-          example: 427908176
-        calculated_at:
-          type: string
-          format: date-time
-          example: "2017-07-21T17:32:28Z"
-
     ErrorResponse:
-      required:
-        -message
+      required: [message]
       type:
         object
       properties:
         message:
           type: string
           example: "wrong information in body"
+
