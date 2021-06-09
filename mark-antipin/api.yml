@@ -33,7 +33,7 @@ paths:
           format: "int64"
       responses:
         "200":
-          description: "Invalid input"
+          description: "ok"
           schema:
             $ref: "#/definitions/RatingResp"
         "422":
