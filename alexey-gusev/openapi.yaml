@@ -1,0 +1,257 @@
+openapi: 3.0.0
+info:
+  title: 'Ride report'
+  description: 'Yandex Go ride report endpoints'
+  version: '1.0.0'
+
+paths:
+  /ride-report:
+    parameters:
+      - in: query
+        description: 'Unique ride ID'
+        name: ride_id
+        required: true
+        schema:
+          type: string
+    get:
+      description: 'Get passenger ride report'
+      responses:
+        '200':
+          description: 'Report created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideReport'
+        '400':
+          description: 'Ride unaccomplished'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideReportBR'
+        '404':
+          description: 'Not found'
+  /driver:
+    parameters:
+      - in: query
+        description: 'Unique driver ID'
+        name: driver_id
+        required: true
+        schema:
+          type: string
+    get:
+      description: 'Get driver full name'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverInfo'
+        '404':
+          description: 'Not found'
+  /vehicle:
+    parameters:
+      - in: query
+        description: 'Unique vehicle ID'
+        name: vehicle_id
+        required: true
+        schema:
+          type: string
+    get:
+      description: 'Get vehicle model and number'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleInfo'
+        '404':
+          description: 'Not found'
+  /ride-report/{user_id}:
+    parameters:
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+    post:
+      description: 'Get all ride reports by user ID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RideReportsPeriod'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RideReportsAll'
+        '404':
+          description: 'Not found'
+  /email/{user_id}:
+    parameters:
+      - in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+    post:
+      description: 'Record new e-mail'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/User'
+                  - $ref: '#/components/schemas/Email'
+        '404':
+          description: 'Not found'
+components:
+  schemas:
+    RideReport:
+      required:
+        - ride_id
+        - starting_point
+        - end_point
+        - starting_time
+        - end_time
+        - ride_date
+        - ride_duration
+        - price
+        - payment_method
+        - rate
+        - driver_fullname
+        - vehicle
+        - vehicle_number
+      type: object
+      additionalProperties: false
+      properties:
+        ride_id:
+          type: string
+        starting_point:
+          type: string
+        end_point:
+          type: string
+        starting_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        ride_date:
+          type: string
+          format: date
+        ride_duration:
+          type: number
+          format: float
+        price:
+          type: number
+          format: float
+        payment_method:
+          type: string
+        rate:
+          type: string
+        driver_fullname:
+          type: string
+        vehicle:
+          type: string
+        vehicle_number:
+          type: string
+    RideReportBR:
+      required:
+        - ride_id
+        - ride_status
+        - message
+      additionalProperties: true
+      type: object
+      properties:
+        ride_id:
+          type: string
+        ride_status:
+          type: string
+        message:
+          type: string
+    DriverInfo:
+      required:
+        - driver_id
+        - name
+        - surname
+      additionalProperties: false
+      type: object
+      properties:
+        driver_id:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string
+        middle_name:
+          type: string
+    VehicleInfo:
+      required:
+        - vehicle_id
+        - vehicle_number
+      additionalProperties: false
+      type: object
+      properties:
+        vehicle_id:
+          type: string
+        vehicle_number:
+          type: string
+        vehicle_brand:
+          type: string
+        vehicle_model:
+          type: string
+    RideReportsPeriod:
+      required:
+        - start_date
+        - end_date
+      additionalProperties: false
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+    RideReportsAll:
+      required:
+        - user_id
+        - rides
+      additionalProperties: false
+      type: object
+      properties:
+        user_id:
+          type: string
+        rides:
+          type: array
+          items:
+            $ref: '#/components/schemas/RideReport'
+    User:
+      required:
+        - user_id
+      additionalProperties: false
+      type: object
+      properties:
+        user_id:
+          type: string
+    Email:
+      required:
+        - email
+      additionalProperties: false
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
