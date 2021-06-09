@@ -97,6 +97,13 @@ components:
             properties:
                 family_id:
                     type: integer
+        CreateFamilyErrorResponse:
+            type: object
+            properties:
+                family_id:
+                    type: integer
+                error_message:
+                    type: string
         GetFamilyDataRequest:
             properties:
                 member_phone:
