@@ -54,6 +54,8 @@ paths:
           $ref: '#/components/responses/ClientRatingResponse'
         '400':
           $ref: '#/components/responses/BadRequestResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
 
     post:
       operationId: postClientRating
@@ -98,15 +100,12 @@ components:
             type: object
             required:
               - average_rating
-              - is_available
             properties:
               average_rating:
                 type: number
                 format: double
                 minimum: 1.0
                 maximum: 5.0
-              is_available:
-                type: boolean
     BadRequestResponse:
       description: Bad Request
       content:
@@ -115,7 +114,16 @@ components:
             type: object
             properties:
               message:
-                type: string            
+                type: string   
+    NotFoundResponse:
+      description: Not Found
+      content:
+        application/json:
+          schema: 
+            type: object
+            properties:
+              message:
+                type: string           
 ```
 
 ## 4) Тесты.
