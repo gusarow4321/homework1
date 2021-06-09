@@ -74,6 +74,6 @@ components:
                     type: integer
                 new_rating:
                     type: number
-                required:
-                    - user_id
-                    - new_rating
+            required:
+                - user_id
+                - new_rating
