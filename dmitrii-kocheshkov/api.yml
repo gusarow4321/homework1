@@ -48,7 +48,7 @@ components:
             additionalProperties: false
             properties:
                 rating:
-                    type: integer
+                    type: number
             required:
               - rating
 
