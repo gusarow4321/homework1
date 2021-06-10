@@ -1,0 +1,41 @@
+swagger: "2.0"
+info:
+  description: Parking zone service
+  version: 1.0.0
+  title: Parking Zone Service
+tags:
+- name: parking_zone
+  description: Get parking zone
+schemes:
+- http
+paths:
+  /get_point:
+    get:
+      tags:
+      - parking_zone
+      summary: Get closest parking point
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: location
+        description: Location data
+        required: true
+        schema:
+          $ref: '#/definitions/Location'
+      responses:
+        "200":
+          description: Successful
+        "400":
+          description: Invalid status value
+definitions:
+  Location:
+    type: object
+    properties:
+      longitude:
+        type: number
+        format: double
+      latitude:
+        type: number
+        format: double
