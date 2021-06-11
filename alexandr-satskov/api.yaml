@@ -2,27 +2,33 @@ openapi: "3.0.0"
 info:
   title: "Family account"
   description: "General payment method in the group"
-  version: 0.0.1
+  version: 0.0.2
 
 paths:
-  /create_family_account:
-    get:
+  /create_account:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserID"
+              
       responses:
         "201":
           description: "created"
         "400":
           description: "account has already been created"
           
-  /delete_family_account:
-    get:
+  /delete_account:
+    delete:
       responses:
-        "200":
+        "204":
           description: "deleted"
         "403":
           description: "u don't have the permission"
                 
   /add_member:
-    post:
+    patch:
       requestBody:
         content:
           application/json:
@@ -34,15 +40,17 @@ paths:
         "400":
           description: "invalid data"
           
-  /delete_member:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserDataValid"
+  /delete_member/{member_id}:
+    parameters:
+    - in: path
+      name: member_id
+      required: true
+      schema:
+        $ref: "#/components/schemas/UserID"
+        
+    delete:
       responses:
-        "200":
+        "204":
           description: "user has been deleted"
         "400":
           description: "user not in the group"
@@ -52,3 +60,84 @@ paths:
             application/json:
               schema:
                 type: string
+                
+  /payment_method/{payment_id}:
+    parameters:
+    - in: path
+      name: payment_id
+      required: true
+      schema:
+        $ref: "#/components/schemas/PaymentID"
+        
+    patch:
+      description: "add a payment method"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDataValid"
+      
+      responses:
+        "204":
+          description: "Ok"
+        "404":
+          description: "Payment method does not exist"
+          content:
+            application/json:
+              schema:
+                type: string
+        "403":
+          description: "u don't have the permission"
+          content:
+            application/json:
+              schema:
+                type: string
+        
+    delete:
+      description: "delete a payment method"
+      responses:
+        "204":
+          description: "Ok"
+          
+        "404":
+          description: "Payment method does not exist"
+          content:
+            application/json:
+              schema:
+                type: string
+      
+                
+components:
+  schemas:
+    UserDataValid:
+      type: object
+      additionalProperties: false
+      properties:
+        phone:
+          type: integer
+        name:
+          type: string
+      required:
+        - phone
+        - name
+
+    PaymentID:
+      type: object
+      additionalProperties: false
+      properties:
+        payment_id:
+          type: integer
+          
+      required:
+        - payment_id
+        
+        
+    UserID:
+      type: object
+      additionalProperties: false
+      properties:
+        payment_id:
+          type: integer
+          
+      required:
+        - user_id
