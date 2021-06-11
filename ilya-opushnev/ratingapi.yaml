@@ -27,6 +27,8 @@ paths:
           description: Invalid clinetID supplied
         "404":
           description: ClinetID not found or no ratings
+paths:
+  /ride/rating/{client_id}:
     post:
       parameters:
       - name: client_id
