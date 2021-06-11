@@ -9,7 +9,7 @@ App -> db
 db -> App
 App -> Client : rating
 
-Driver -> App: Post ride/rating/{clinet_id}
+Driver -> App: Post ride/rating/{ride_id}
 App -> db
 db -> App
 App -> Driver : 200 OK
