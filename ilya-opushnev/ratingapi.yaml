@@ -28,10 +28,10 @@ paths:
         "404":
           description: ClinetID not found or no ratings
 paths:
-  /ride/rating/{client_id}:
+  /ride/rating/{ride_id}:
     post:
       parameters:
-      - name: client_id
+      - name: ride_id
         in: path
         required: true
         style: simple
@@ -50,7 +50,7 @@ paths:
         "400":
           description: Invalid clinetID supplied
         "404":
-          description: ClinetID not found
+          description: RideID not found
 components:
   schemas:
     GetRating:
