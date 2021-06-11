@@ -1,0 +1,16 @@
+@startuml
+actor Client
+actor Driver 
+participant App
+database db
+
+Client -> App : Get rating/{client_id}
+App -> db
+db -> App
+App -> Client : rating
+
+Driver -> App: Post ride/rating/{clinet_id}
+App -> db
+db -> App
+App -> Driver : 200 OK
+@enduml
