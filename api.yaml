@@ -111,7 +111,7 @@ paths:
                 type: object
                 additionalProperties: false
                 properties:
-                  order_id:
+                  user_id:
                     type: string
                     description: ID пользователя
                     example: "1"
@@ -143,6 +143,15 @@ paths:
           schema:
             type: string
             minLength: 1
+        - name: rating
+          description: Рейтинг
+          in: query
+          required: true
+          schema:
+            type: number
+            format: float
+            min: 1.00
+            max: 5.00     
       responses:
         "200":
           description: OK
@@ -152,7 +161,7 @@ paths:
                 type: object
                 additionalProperties: false
                 properties:
-                  order_id:
+                  user_id:
                     type: string
                     description: ID пользователя
                     example: "1"
