@@ -255,3 +255,5 @@ components:
         email:
           type: string
           format: email
+        verified:
+          type: boolean
