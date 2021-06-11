@@ -1,4 +1,3 @@
----
 openapi: 3.0.3
 info:
   title: Family account
@@ -9,354 +8,286 @@ paths:
     summary: создание/удаление/обновление семьи
     get:
       operationId: GetFamilyInfo
+      parameters:
+        - in: query
+          name: user_id
+          description: Идентификатор группы.
+          required: true
+          schema:
+            $ref: "#/components/schemas/groupId"
       responses:
-        "200":
+        200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
-        "403":
-          description: ForbiddenActions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "404":
-          description: NotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
+                type: object
+                required:
+                  - IdMaster
+                  - IdSlaves
+                  - InvitedSlaves
+                  - PaymentInfo
+                properties:
+                  IdMaster:
+                    $ref: "#/components/schemas/userId"
+                  IdSlaves:
+                    $ref: "#/components/schemas/listUserId"
+                  InvitedSlaves:
+                    $ref: "#/components/schemas/listEmails"
+                  PaymentInfo:
+                    $ref: "#/components/schemas/paymentInfo"
+        403:
+          $ref: "#/components/responses/Forbidden"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        404:
+          $ref: "#/components/responses/NotFoundResponse"
     post:
       operationId: CreateFamily
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/body'
-        required: true
+              type: object
+              required:
+                - userId
+              properties:
+                userId:
+                  $ref: "#/components/schemas/userId"
       responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "403":
-          description: ForbiddenActions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
+        200:
+          $ref: "#/components/responses/OKResponse"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        403:
+          $ref: "#/components/responses/Forbidden"
     patch:
       operationId: UpdateFamilyInfo
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/body_1'
-        required: true
+              type: object
+              required:
+                - Action
+              properties:
+                Action:
+                  $ref: "#/components/schemas/Action"
       responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "403":
-          description: NotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
+        200:
+          $ref: "#/components/responses/OKResponse"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        403:
+          $ref: "#/components/responses/Forbidden"
+    delete:
+      operationId: DeleteFamily
+      parameters:
+        - in: query
+          name: user_id
+          description: Идентификатор группы.
+          required: true
+          schema:
+            $ref: "#/components/schemas/groupId"
+      responses:
+        200:
+          $ref: "#/components/responses/OKResponse"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        403:
+          $ref: "#/components/responses/Forbidden"
+        
+    
   /add_invited:
     patch:
       operationId: AddUserToFamily
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/body_2'
-        required: true
+              type: object
+              required:
+                - groupId
+                - userId
+              properties:
+                groupId:
+                  $ref: "#/components/schemas/groupId"
+                userId:
+                  $ref: "#/components/schemas/userId"
+                  
       responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "404":
-          description: NotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
+        200:
+          $ref: "#/components/responses/OKResponse"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        404:
+          $ref: "#/components/responses/NotFoundResponse"
   /payment_info:
     get:
       operationId: GetPaymentInfo
       parameters:
-      - name: user_id
-        in: query
-        description: Идентификатор пользователя.
-        required: true
-        style: form
-        explode: true
-        schema:
-          $ref: '#/components/schemas/userId'
-      - name: group_id
-        in: query
-        description: Идентификатор группы.
-        required: true
-        style: form
-        explode: true
-        schema:
-          $ref: '#/components/schemas/groupId'
+        - in: query
+          name: user_id
+          description: Идентификатор пользователя.
+          required: true
+          schema:
+            $ref: "#/components/schemas/userId"
+        - in: query
+          name: group_id
+          description: Идентификатор группы.
+          required: true
+          schema:
+            $ref: "#/components/schemas/groupId"
       responses:
-        "200":
-          description: EncreptedPaymentInfo
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_200_1'
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "404":
-          description: NotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "403":
-          description: NotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
+        200:
+          $ref: "#/components/responses/PaymentInfo"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        404:
+          $ref: "#/components/responses/NotFoundResponse"
+        403:
+          $ref: "#/components/responses/NotFoundResponse"
     post:
       operationId: CreatePayment
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/body_3'
-        required: true
+              type: object
+              required:
+                - groupId
+                - paymentInfo
+              properties:
+                groupId:
+                  $ref: "#/components/schemas/userId"
+                paymentInfo:
+                  $ref: "#/components/schemas/paymentInfo"
       responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "403":
-          description: ForbiddenActions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
+        200:
+          $ref: "#/components/responses/OKResponse"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        403:
+          $ref: "#/components/responses/Forbidden"
     patch:
       operationId: UpdatePayment
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/body_4'
-        required: true
+              type: object
+              required:
+                - groupId
+                - paymentInfo
+              properties:
+                groupId:
+                  $ref: "#/components/schemas/userId"
+                paymentInfo:
+                  $ref: "#/components/schemas/paymentInfo"
       responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "400":
-          description: BadRequest
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
-        "403":
-          description: NotFound
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/inline_response_403'
+        200:
+          $ref: "#/components/responses/OKResponse"
+        400:
+          $ref: "#/components/responses/BadRequestResponse"
+        403:
+          $ref: "#/components/responses/Forbidden"
 components:
   schemas:
     userId:
-      minimum: 1
       type: number
       format: int64
+      minimum: 1
       default: 42
     listUserId:
       type: array
       items:
-        $ref: '#/components/schemas/userId'
+        $ref: "#/components/schemas/userId"
     groupId:
-      minimum: 1
       type: number
       format: int64
+      minimum: 1
       default: 42
+    
     email:
       type: string
       default: someone@example.com
     listEmails:
       type: array
       items:
-        $ref: '#/components/schemas/email'
+        $ref: "#/components/schemas/email"
     paymentInfo:
       type: string
       default: SomePaymentDigits
     actionCode:
-      minimum: 1
       type: number
       format: int64
+      minimum: 1
       default: 42
     Action:
-      required:
-      - action
-      - user
       type: object
+      required:
+        - user
+        - action
       properties:
         user:
           type: string
           description: May be email may be userId.
         action:
-          $ref: '#/components/schemas/actionCode'
-    inline_response_200:
-      required:
-      - IdMaster
-      - IdSlaves
-      - InvitedSlaves
-      - PaymentInfo
-      type: object
-      properties:
-        IdMaster:
-          $ref: '#/components/schemas/userId'
-        IdSlaves:
-          $ref: '#/components/schemas/listUserId'
-        InvitedSlaves:
-          $ref: '#/components/schemas/listEmails'
-        PaymentInfo:
-          $ref: '#/components/schemas/paymentInfo'
-    inline_response_403:
-      type: object
-      properties:
-        msg:
-          type: string
-          default: Useful message
-    body:
-      required:
-      - userId
-      type: object
-      properties:
-        userId:
-          $ref: '#/components/schemas/userId'
-    body_1:
-      required:
-      - Action
-      type: object
-      properties:
-        Action:
-          $ref: '#/components/schemas/Action'
-    body_2:
-      required:
-      - groupId
-      - userId
-      type: object
-      properties:
-        groupId:
-          $ref: '#/components/schemas/groupId'
-        userId:
-          $ref: '#/components/schemas/userId'
-    inline_response_200_1:
-      type: object
-      properties:
-        info:
-          type: string
-          default: info
-    body_3:
-      required:
-      - groupId
-      - paymentInfo
-      type: object
-      properties:
-        groupId:
-          $ref: '#/components/schemas/userId'
-        paymentInfo:
-          $ref: '#/components/schemas/paymentInfo'
-    body_4:
-      required:
-      - groupId
-      - paymentInfo
-      type: object
-      properties:
-        groupId:
-          $ref: '#/components/schemas/userId'
-        paymentInfo:
-          $ref: '#/components/schemas/paymentInfo'
+          $ref: "#/components/schemas/actionCode"
+      
   responses:
     OKResponse:
       description: OK
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/inline_response_403'
+            type: object
+            properties:
+              msg:
+                type: string
+                default: Useful message
     BadRequestResponse:
       description: BadRequest
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/inline_response_403'
+            type: object
+            properties:
+              msg:
+                type: string
+                default: Useful message
     NotFoundResponse:
       description: NotFound
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/inline_response_403'
+            type: object
+            properties:
+              msg:
+                type: string
+                default: Useful message
     Forbidden:
-      description: ForbiddenActions
+      description: ForbidenActions
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/inline_response_403'
+            type: object
+            properties:
+              msg:
+                type: string
+                default: Useful message
     PaymentInfo:
-      description: EncryptedPaymentInfo
+      description: EncreptedPaymentInfo
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/inline_response_200_1'
+            type: object
+            properties:
+              info:
+                type: string
+                default: info
