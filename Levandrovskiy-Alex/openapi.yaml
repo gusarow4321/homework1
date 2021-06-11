@@ -4,7 +4,7 @@ info:
     version: '1.0'
 
 paths:
-    /setScore:
+    /score:
         post:
             description: 'Add a new passenger score'
             requestBody:
@@ -14,7 +14,7 @@ paths:
                             $ref: '#/components/schemas/Score'
             responses:
                 '201':
-                    description: 'Added'
+                    description: 'Created'
                     content:
                       application/json:
                         schema:
@@ -23,8 +23,7 @@ paths:
                     description: 'Bad request'
                 '404':
                     description: 'Passenger not found'
-                    
-    /getScore:
+           
         get:
             description: 'Get passenger score'
             parameters:
@@ -33,6 +32,7 @@ paths:
                   required: true
                   schema:
                     type: "integer"
+                    format: "int64"
             responses:
                 '200':
                     description: 'Ok'
@@ -62,10 +62,8 @@ components:
                 badPerson:
                     type: "boolean"
                     default: false
-                datetime:
-                    type: "string"
             required:
-              - passenger_id
+              - passengerId
               - score
               - badPerson
               - datetime
